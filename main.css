@@ -1,0 +1,133 @@
+/* apply a natural box layout model to all elements, but allowing components
+ to change */
+html {
+  box-sizing: border-box;
+  background: #90CAF9;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/*==============================================================================
+ * Nav Bar
+ *============================================================================*/
+
+nav {
+  width: 100%;
+  height: 50px;
+  border-bottom: solid crimson;
+  background: #0D47A1;
+}
+
+.nav-links {
+  padding: 0;
+  margin: 0 auto;
+}
+
+.nav-links li {
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+  margin: 0 auto;
+  vertical-align: middle;
+  line-height: 50px;
+}
+
+a {
+  text-decoration: none;
+  color: #BBDEFB
+}
+
+a:hover {
+  color: #F44336;
+}
+
+a:visited {
+  /*nothing*/
+}
+
+/*==============================================================================
+ * Main
+ *============================================================================*/
+
+main {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100%;
+}
+
+.box-element {
+  width: 100%;
+  text-align: center;
+}
+
+
+.heading {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.hero {
+  display: block;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  text-align: center;
+  margin: 10px 0;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+/*==============================================================================
+ * Footer
+ *============================================================================*/
+
+footer {
+  width: 100%;
+  height: 50px;
+  border-top: solid crimson;
+  background: #0D47A1;
+}
+
+.footer-main {
+  margin: 10px auto;
+  color: #FFFFFF;
+}
+
+/*==============================================================================
+ * Media Queries
+ *============================================================================*/
+
+@media screen and (min-width: 400px) {
+  .nav-links li {
+    width: 100px;
+  }
+  img {
+    width: 400px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .nav-links {
+    width: 800px;
+  }
+
+  .nav-links li {
+    text-align: left;
+  }
+
+  main {
+    width: 800px;
+  }
+
+  .footer-main {
+    width: 800px;
+  }
+}
