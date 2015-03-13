@@ -8,6 +8,22 @@ html {
   box-sizing: inherit;
 }
 
+.hidden {
+  display: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
 /*==============================================================================
  * Nav Bar
  *============================================================================*/
@@ -15,7 +31,7 @@ html {
 nav {
   width: 100%;
   height: 50px;
-  border-bottom: solid crimson;
+  border-bottom: solid #F44336;
   background: #0D47A1;
 }
 
@@ -26,11 +42,10 @@ nav {
 
 .nav-links li {
   display: inline-block;
-  width: 30%;
   text-align: center;
-  margin: 0 auto;
   vertical-align: middle;
   line-height: 50px;
+  padding: 0 10px;
 }
 
 a {
@@ -46,6 +61,33 @@ a:visited {
   /*nothing*/
 }
 
+.cat-menu {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  margin: 0 3px;
+}
+
+.cat-menu svg {
+  width: 32px;
+  fill: #E0E0E0;
+}
+
+#cat-nav {
+  padding-right: 10px;
+}
+
+#cat-nav li {
+  color: #FFFFFF;
+  padding: 5px 10px;
+  margin: 10px 0;
+  border-bottom: solid 1px white;
+}
+
+#cat-nav li.active {
+  color: #F44336;
+}
+
 /*==============================================================================
  * Main
  *============================================================================*/
@@ -53,15 +95,39 @@ a:visited {
 main {
   width: 100%;
   margin: 0 auto;
-  background-color: #FFFFFF;
   display: flex;
   flex-wrap: wrap;
-  min-height: 100%;
+}
+
+main aside {
+  z-index: 10;
+  background-color: #1565C0;
+  width: 200px;
+  max-height: 100%;
+  overflow: scroll;
+  position: absolute;
+  /* This transform moves the drawer off canvas. */
+  -webkit-transform: translate(-300px, 0);
+  transform: translate(-300px, 0);
+  /* Optionally, we animate the drawer. */
+  transition: transform 0.3s ease;
+}
+
+main aside.open {
+  /* This transform moves the drawer off canvas. */
+  -webkit-transform: translate(0px, 0);
+  transform: translate(0px, 0);
+}
+
+main article {
+  width: 100%;
+  background-color: #2196F3;
 }
 
 .box-element {
   width: 100%;
   text-align: center;
+  border: solid #2196F3 1px;
 }
 
 
@@ -74,10 +140,9 @@ main {
 .hero {
   display: block;
   width: 100%;
-  height: 200px;
   overflow: hidden;
   text-align: center;
-  margin: 10px 0;
+  padding: 20px;
 }
 
 img {
@@ -92,7 +157,7 @@ img {
 footer {
   width: 100%;
   height: 50px;
-  border-top: solid crimson;
+  border-top: solid #F44336;
   background: #0D47A1;
 }
 
@@ -101,18 +166,14 @@ footer {
   color: #FFFFFF;
 }
 
+.footer-main .copyright {
+  line-height: 1.8;
+  margin-left: 10px;
+}
+
 /*==============================================================================
  * Media Queries
  *============================================================================*/
-
-@media screen and (min-width: 400px) {
-  .nav-links li {
-    width: 100px;
-  }
-  img {
-    width: 400px;
-  }
-}
 
 @media screen and (min-width: 800px) {
   .nav-links {
@@ -123,6 +184,20 @@ footer {
     text-align: left;
   }
 
+  #menu {
+    display: none;
+  }
+
+  main aside {
+    position: relative;
+    /* This transform moves the drawer off canvas. */
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+
+  main article {
+    width :600px;
+  }
   main {
     width: 800px;
   }

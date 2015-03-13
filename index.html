@@ -4,24 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Udacity JS</title>
-  <link rel="stylesheet" href="reset.css"/>
-  <link rel="stylesheet" href="main.css"/>
+  <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
+  <link rel="stylesheet" href="stylesheets/reset.css"/>
+  <link rel="stylesheet" href="stylesheets/main.css"/>
 </head>
 <body>
   <nav>
     <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
+      <li>
+        <a href="https://github.com/chooie/js-udacity">Go back to GitHub</a>
+      </li>
     </ul>
   </nav>
-  <main id="cat-container">
+  <main>
+    <a id="menu" class="cat-menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+      </svg>
+    </a>
+    <aside>
+      <ul id="cat-nav"></ul>
+    </aside>
+    <article id="cat-container"></article>
   </main>
   <footer>
     <section class="footer-main">
-      <span>&copy; Charlie Hebert</span>
+      <span class="copyright">&copy; Charlie Hebert</span>
     </section>
   </footer>
-  <script src="main.js"></script>
+  <script src="scripts/main.js"></script>
+  <script src="scripts/cat-menu.js"></script>
 </body>
 </html>
