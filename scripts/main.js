@@ -49,6 +49,8 @@
           cat[key] = options[key];
         }
       }
+      this.refreshCatMainView();
+      listView.init();
     },
 
     refreshCatMainView: function() {
@@ -67,6 +69,8 @@
         catList = document.createElement('ul'),
         catListNode;
 
+      catNav.innerHTML = '';
+      
       cats.forEach(function(cat, i) {
         catListNode = document.createElement('li');
         if (i === 0) {
@@ -190,7 +194,6 @@
 
     if (target.id === 'admin-btn-save') {
       adminView.updateActiveCat();
-      controller.refreshCatMainView();
     }
   });
 }());
