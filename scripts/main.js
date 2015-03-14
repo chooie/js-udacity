@@ -46,8 +46,10 @@
     updateActiveCat: function(options) {
       var cat = this.getActiveCat();
       for (var key in options) {
-        if (cat.hasOwnProperty(key)) {
-          cat[key] = options[key];
+        if (options.hasOwnProperty(key)) {
+          if (cat.hasOwnProperty(key)) {
+            cat[key] = options[key];
+          }
         }
       }
       this.refreshCatMainView();
