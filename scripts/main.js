@@ -15,7 +15,7 @@
     },
 
     getCatByName: function(catName) {
-      return catModel.getAllCats().filter(function(element) {
+      return this.getAllCats().filter(function(element) {
         return element.name === catName;
       })[0]; // return just one cat
     }
@@ -23,10 +23,10 @@
 
   var controller = {
     init: function() {
-      controller.setActiveCat(catModel.getAllCats()[0].name);
+      adminView.init();
+      this.setActiveCat(catModel.getAllCats()[0].name);
       listView.init();
       catMainView.init();
-      adminView.init();
     },
 
     getAllCats: function() {
@@ -34,12 +34,13 @@
     },
 
     getActiveCat: function() {
-      return controller.activeCat;
+      return this.activeCat;
     },
 
     setActiveCat: function(catName) {
-      controller.activeCat = catModel.getCatByName(catName);
+      this.activeCat = catModel.getCatByName(catName);
       catMainView.refresh();
+      adminView.updateAdminFields();
     },
 
     updateActiveCat: function(options) {
@@ -58,7 +59,7 @@
     },
 
     updateClickCount: function() {
-      controller.activeCat.clicks += 1;
+      this.activeCat.clicks += 1;
     }
   };
 
@@ -84,8 +85,8 @@
     },
 
     refreshList: function (node) {
-      listView.deactivate();
-      listView.activate(node);
+      this.deactivate();
+      this.activate(node);
     },
 
     deactivate: function() {
@@ -183,12 +184,7 @@
     }
 
     // Admin button was clicked
-    if (target.id === 'admin-btn') {
-      adminView.toggleDisplay();
-      adminView.updateAdminFields();
-    }
-
-    if (target.id === 'admin-btn-cancel') {
+    if (target.id === 'admin-btn' || target.id === 'admin-btn-cancel') {
       adminView.toggleDisplay();
     }
 
