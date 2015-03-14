@@ -2,11 +2,11 @@
   'use strict';
 
   var cats = [
-    { name: 'Tabby', imageRef: 'catPics/cat0.jpg', clicks: 0 },
-    { name: 'Siamese', imageRef: 'catPics/cat1.jpg', clicks: 0 },
-    { name: 'Red', imageRef: 'catPics/cat2.jpg', clicks: 0 },
-    { name: 'Fox', imageRef: 'catPics/cat3.jpg', clicks: 0 },
-    { name: 'SomeCat', imageRef: 'catPics/cat4.jpg', clicks: 0 }
+    { name: 'Tabby', imgURL: 'catPics/cat0.jpg', clicks: 0 },
+    { name: 'Siamese', imgURL: 'catPics/cat1.jpg', clicks: 0 },
+    { name: 'Red', imgURL: 'catPics/cat2.jpg', clicks: 0 },
+    { name: 'Fox', imgURL: 'catPics/cat3.jpg', clicks: 0 },
+    { name: 'SomeCat', imgURL: 'catPics/cat4.jpg', clicks: 0 }
   ];
 
   var catModel = {
@@ -23,9 +23,10 @@
 
   var controller = {
     init: function() {
-      controller.setActiveCat('Tabby');
+      controller.setActiveCat(catModel.getAllCats()[0].name);
       listView.init();
-      catsView.init();
+      catMainView.init();
+      adminView.init();
     },
 
     getAllCats: function() {
@@ -38,7 +39,20 @@
 
     setActiveCat: function(catName) {
       controller.activeCat = catModel.getCatByName(catName);
-      catsView.displayCat();
+      catMainView.refresh();
+    },
+
+    updateActiveCat: function(options) {
+      var cat = this.getActiveCat();
+      for (var key in options) {
+        if (cat.hasOwnProperty(key)) {
+          cat[key] = options[key];
+        }
+      }
+    },
+
+    refreshCatMainView: function() {
+      catMainView.refresh();
     },
 
     updateClickCount: function() {
@@ -84,30 +98,65 @@
     }
   };
 
-  var catsView = {
+  var catMainView = {
     init: function() {
-      catsView.displayCat();
+      this.refresh();
     },
 
-    displayCat: function() {
-      var cat = controller.getActiveCat(),
-        catNameNode = document.getElementById('cat-name'),
+    refresh: (function() {
+      var catNameNode = document.getElementById('cat-name'),
         countNode = document.getElementById('count-elem'),
         catImg = document.getElementById('cat-pic');
 
-      catNameNode.innerHTML = cat.name;
-      countNode.innerHTML = '' + cat.clicks;
-      catImg.src = cat.imageRef;
-    },
+      return function() {
+        var cat = controller.getActiveCat();
+
+        catNameNode.innerHTML = cat.name;
+        countNode.innerHTML = '' + cat.clicks;
+        catImg.src = cat.imgURL;
+      };
+    }()),
 
     updateClickCount: function() {
       controller.updateClickCount();
-      catsView.refreshCounter();
+      this.refreshCounter();
     },
 
-    refreshCounter: function() {
+    refreshCounter: (function() {
       var countNode = document.getElementById('count-elem');
-      countNode.innerHTML = '' +  controller.getActiveCat().clicks;
+
+      return function() {
+        countNode.innerHTML = '' +  controller.getActiveCat().clicks;
+      };
+    }())
+  };
+
+  var adminView = {
+    init: function() {
+      this.adminPanel = document.getElementById('admin-panel');
+      this.nameField = document.getElementById('name-field');
+      this.urlField = document.getElementById('image-url-field');
+      this.countField = document.getElementById('count-field');
+    },
+
+    toggleDisplay: function() {
+      this.adminPanel.classList.toggle('hidden');
+    },
+
+    updateAdminFields: function() {
+      var cat = controller.getActiveCat();
+      this.nameField.value = cat.name;
+      this.urlField.value = cat.imgURL;
+      this.countField.value = cat.clicks;
+    },
+
+    updateActiveCat: function() {
+      var options = {
+        name: this.nameField.value,
+        imgURL: this.urlField.value,
+        clicks: parseInt(this.countField.value, 10)
+      };
+      controller.updateActiveCat(options);
     }
   };
 
@@ -118,7 +167,7 @@
     var target = e.target;
     // The cat image was clicked
     if (target.id === 'cat-pic') {
-      catsView.updateClickCount();
+      catMainView.updateClickCount();
     }
 
     // A link was clicked on the cat-nav bar
@@ -127,6 +176,21 @@
       controller.setActiveCat(target.innerHTML);
       // Update active list
       listView.refreshList(target);
+    }
+
+    // Admin button was clicked
+    if (target.id === 'admin-btn') {
+      adminView.toggleDisplay();
+      adminView.updateAdminFields();
+    }
+
+    if (target.id === 'admin-btn-cancel') {
+      adminView.toggleDisplay();
+    }
+
+    if (target.id === 'admin-btn-save') {
+      adminView.updateActiveCat();
+      controller.refreshCatMainView();
     }
   });
 }());

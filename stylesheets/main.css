@@ -20,6 +20,10 @@ h2 {
   font-size: 2em;
 }
 
+.hidden {
+  display: none;
+}
+
 /*==============================================================================
  * Nav Bar
  *============================================================================*/
@@ -126,11 +130,11 @@ main article {
   border: solid #2196F3 1px;
 }
 
-
 .heading {
   text-align: center;
   width: 100%;
   margin-top: 10px;
+  overflow: scroll;
 }
 
 .hero {
@@ -144,6 +148,34 @@ main article {
 img {
   width: 100%;
   height: auto;
+}
+
+.admin-btn {
+  display: block;
+  margin: 10px auto;
+}
+
+.admin-panel {
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #F44336
+}
+
+.admin-heading {
+  text-align: center;
+}
+
+.input-field {
+  margin: 10px auto;
+}
+
+.input-field label {
+  display: block;
+  width: 250px;
+}
+
+.input-field input {
+  width: 250px;
 }
 
 /*==============================================================================
