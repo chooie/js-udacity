@@ -28,6 +28,10 @@
       catsView.init();
     },
 
+    getAllCats: function() {
+      return catModel.getAllCats();
+    },
+
     getActiveCat: function() {
       return controller.activeCat;
     },
@@ -44,7 +48,7 @@
 
   var listView = {
     init: function() {
-      var cats = catModel.getAllCats(),
+      var cats = controller.getAllCats(),
         catNav = document.getElementById('cat-nav'),
         catList = document.createElement('ul'),
         catListNode;
