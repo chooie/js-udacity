@@ -8,10 +8,6 @@ html {
   box-sizing: inherit;
 }
 
-.hidden {
-  display: none;
-}
-
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
@@ -65,7 +61,7 @@ a:visited {
   display: inline-block;
   position: absolute;
   right: 0;
-  margin: 0 3px;
+  padding-right: 20px;
 }
 
 .cat-menu svg {
@@ -184,7 +180,7 @@ footer {
     text-align: left;
   }
 
-  #menu {
+  .cat-menu {
     display: none;
   }
 

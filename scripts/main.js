@@ -2,94 +2,127 @@
   'use strict';
 
   var cats = [
-    { name: 'Tabby', imageRef: 'catPics/cat0.jpg' },
-    { name: 'Siamese', imageRef: 'catPics/cat1.jpg' },
-    { name: 'Red', imageRef: 'catPics/cat2.jpg' },
-    { name: 'Fox', imageRef: 'catPics/cat3.jpg' },
-    { name: 'SomeCat', imageRef: 'catPics/cat4.jpg' }
+    { name: 'Tabby', imageRef: 'catPics/cat0.jpg', clicks: 0 },
+    { name: 'Siamese', imageRef: 'catPics/cat1.jpg', clicks: 0 },
+    { name: 'Red', imageRef: 'catPics/cat2.jpg', clicks: 0 },
+    { name: 'Fox', imageRef: 'catPics/cat3.jpg', clicks: 0 },
+    { name: 'SomeCat', imageRef: 'catPics/cat4.jpg', clicks: 0 }
   ];
 
-  var makeCats = function(cats) {
-    var mainNode = document.getElementById('cat-container'),
-      catNav = document.getElementById('cat-nav'),
-      newCatNode,
-      headingNode,
-      heroNode,
-      liNode;
+  var catModel = {
+    getAllCats: function() {
+      return cats;
+    },
 
-    for (var i = 0; i < cats.length; i += 1) {
-      // Container
-      newCatNode = document.createElement('div');
-      newCatNode.className = 'box-element ' + (i === 0 ? 'active': 'hidden');
-      newCatNode.id = 'cat-' + i;
+    getCatByName: function(catName) {
+      return catModel.getAllCats().filter(function(element) {
+        return element.name === catName;
+      })[0]; // return just one cat
+    }
+  };
 
-      // Header
-      headingNode = document.createElement('div');
-      headingNode.className = 'heading';
-      headingNode.innerHTML = '<h1>' + cats[i].name + '</h1>' +
-      '<h2>Number of Clicks: <span id="count-elem' +
-      i + '">0</span></h2>';
+  var controller = {
+    init: function() {
+      controller.setActiveCat('Tabby');
+      listView.init();
+      catsView.init();
+    },
 
-      // Hero
-      heroNode = document.createElement('section');
-      heroNode.className = 'hero';
-      heroNode.innerHTML = '<img id="cat-elem' + i + '" src="' +
-      cats[i].imageRef + '" alt="A picture of a cat."/>';
+    getActiveCat: function() {
+      return controller.activeCat;
+    },
 
-      // Add children to main
-      newCatNode.appendChild(headingNode);
-      newCatNode.appendChild(heroNode);
-      mainNode.appendChild(newCatNode);
+    setActiveCat: function(catName) {
+      controller.activeCat = catModel.getCatByName(catName);
+      catsView.displayCat();
+    },
 
-      liNode = document.createElement('li');
-      liNode.id = 'cat-nav' + i;
-      liNode.className = i === 0 ? 'active' : '';
-      liNode.innerHTML = cats[i].name;
-      catNav.appendChild(liNode);
+    updateClickCount: function() {
+      controller.activeCat.clicks += 1;
+    }
+  };
+
+  var listView = {
+    init: function() {
+      var cats = catModel.getAllCats(),
+        catNav = document.getElementById('cat-nav'),
+        catList = document.createElement('ul'),
+        catListNode;
+
+      cats.forEach(function(cat, i) {
+        catListNode = document.createElement('li');
+        if (i === 0) {
+          catListNode.classList.add('active');
+        }
+        catListNode.classList.add('cat-li');
+        catListNode.innerHTML = cat.name;
+        catList.appendChild(catListNode);
+      });
+      catNav.appendChild(catList);
+    },
+
+    refreshList: function (node) {
+      listView.deactivate();
+      listView.activate(node);
+    },
+
+    deactivate: function() {
+      var activeNode = document.querySelector('.active');
+      activeNode.classList.remove('active');
+    },
+
+    /**
+     * Adds the 'active' class to a give node.
+     * @param {Node} node
+     */
+    activate: function(node) {
+      node.classList.add('active');
+    }
+  };
+
+  var catsView = {
+    init: function() {
+      catsView.displayCat();
+    },
+
+    displayCat: function() {
+      var cat = controller.getActiveCat(),
+        catNameNode = document.getElementById('cat-name'),
+        countNode = document.getElementById('count-elem'),
+        catImg = document.getElementById('cat-pic');
+
+      catNameNode.innerHTML = cat.name;
+      countNode.innerHTML = '' + cat.clicks;
+      catImg.src = cat.imageRef;
+    },
+
+    updateClickCount: function() {
+      controller.updateClickCount();
+      catsView.refreshCounter();
+    },
+
+    refreshCounter: function() {
+      var countNode = document.getElementById('count-elem');
+      countNode.innerHTML = '' +  controller.getActiveCat().clicks;
+    }
+  };
+
+  controller.init();
+
+
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    // The cat image was clicked
+    if (target.id === 'cat-pic') {
+      catsView.updateClickCount();
     }
 
-    document.addEventListener('click', function(e) {
-      var idNumber,
-        countNode,
-        regexp = e.target.id.match(/cat-elem(\d)/),
-        catNodeToShow,
-        listNode;
-
-      // A cat image was clicked
-      if (regexp && regexp.length > 0) {
-        idNumber = regexp[1];
-        countNode = document.getElementById('count-elem' + idNumber);
-        countNode.innerHTML = "" + (parseInt(countNode.innerHTML, 10) + 1);
-      }
-
-      regexp = e.target.id.match(/cat-nav(\d)/);
-
-      // A link was clicked on the cat-nav bar
-      if (regexp && regexp.length > 0) {
-        // Toggle all active elements off
-        Array.prototype.forEach.call(document.querySelectorAll('li.active'),
-        function(element) {
-          element.classList.toggle('active');
-        });
-
-        // Toggle all cat elements that are active
-        Array.prototype.forEach.call(
-          document.querySelectorAll('#cat-container .active'),
-        function(element) {
-          element.classList.toggle('active');
-          element.classList.toggle('hidden');
-        });
-
-        // Make clicked link active
-        listNode = document.getElementById('cat-nav' + regexp[1]);
-        listNode.classList.toggle('active');
-
-        // Toggle associated cat-box
-        catNodeToShow = document.getElementById('cat-' + regexp[1]);
-        catNodeToShow.classList.toggle('active');
-        catNodeToShow.classList.toggle('hidden');
-      }
-    });
-  };
-  makeCats(cats);
+    // A link was clicked on the cat-nav bar
+    if (target.nodeName === 'LI' && target.classList.contains('cat-li')) {
+      // Set active cat to cat that corresponds to the name in li node
+      controller.setActiveCat(target.innerHTML);
+      // Update active list
+      listView.refreshList(target);
+    }
+  });
 }());

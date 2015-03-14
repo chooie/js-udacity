@@ -1,8 +1,8 @@
 (function() {
   'use strict';
-  var menu = document.querySelector('#menu'),
+  var menu = document.querySelector('#cat-menu'),
     main = document.querySelector('main'),
-    drawer = document.querySelector('main aside');
+    drawer = document.querySelector('#cat-nav');
 
   menu.addEventListener('click', function(e) {
     drawer.classList.toggle('open');
